@@ -1,19 +1,21 @@
-import { Application, Sprite } from 'pixi.js'
+import { LoaderScene } from "./LoaderScene";
+import { Manager } from "./SceneManager";
+import { Viewport } from "pixi-viewport";
+import { Loader } from "@pixi/loaders";
+import { Sprite } from "@pixi/sprite";
+import { GameScene } from "./GameScene";
+import { Keyboard } from "./Keyboard";
 
-const app = new Application({
-	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-	resolution: window.devicePixelRatio || 1,
-	autoDensity:true,
-	backgroundColor: 0x6495ed,
-	width: 640,
-	height: 480
-});
+Manager.initialize(0x55ff77);
+const loaderScene = new LoaderScene(start);
+Manager.changeScene(loaderScene);
 
-const clampy: Sprite = Sprite.from("clampy.png");
+const resources = Loader.shared.resources;
 
-clampy.anchor.set(0.5);
+function start() {
+  // activate plugins
+  const gameScene = new GameScene();
 
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
-
-app.stage.addChild(clampy);
+  // add the viewport to the stage
+  Manager.changeScene(gameScene);
+}
