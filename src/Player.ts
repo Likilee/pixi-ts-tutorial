@@ -25,6 +25,7 @@ export class Player extends Container implements Avatar {
   private state: Function;
   private elapsed: number;
   private parts: Sprite[];
+  private viewport: Viewport;
 
   constructor(name: string, viewport: Viewport) {
     super();
@@ -37,6 +38,8 @@ export class Player extends Container implements Avatar {
     this.parts = [];
     this.keyboard = new PlayerKeyboard(this);
     this.position.set(viewport.worldWidth / 2, viewport.worldHeight / 2);
+    this.viewport = viewport;
+
     this.parts[AvatarParts.LEFT_ARM] = Sprite.from(
       resources[name + "Arm"].texture
     );
@@ -75,11 +78,9 @@ export class Player extends Container implements Avatar {
 
     this.parts[AvatarParts.RIGHT_LEG].anchor.set(0.5, 0.2);
     this.parts[AvatarParts.RIGHT_LEG].position.set(-8, 42);
-
-    Ticker.shared.add((delta) => this.gameLoop(delta));
   }
 
-  private gameLoop(delta: number) {
+  public update(framesPassed: number) {
     //Update the current game state:
     // console.log(this.keyboard.down.isDown);
     if (this.isMoving()) {
@@ -89,7 +90,7 @@ export class Player extends Container implements Avatar {
       this.state = this.stand;
       this.initArmAndLegsAngle();
     }
-    this.state(delta);
+    this.state(framesPassed);
   }
 
   private isMoving() {
@@ -112,8 +113,8 @@ export class Player extends Container implements Avatar {
   // private changeVx() {}
 
   private move(delta) {
-    this.x += this.vx;
-    this.y += this.vy;
+    this.x += this.vx * delta;
+    this.y += this.vy * delta;
 
     this.moveGesture(delta);
   }

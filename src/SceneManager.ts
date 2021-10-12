@@ -28,7 +28,7 @@ export class Manager {
     Manager.application = new Application({
       view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
       resizeTo: window, // This line here handles the actual resize!
-      resolution: window.devicePixelRatio || 1,
+      resolution: 1,
       backgroundColor: background,
       antialias: true,
     });
