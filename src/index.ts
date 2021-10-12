@@ -4,7 +4,6 @@ import { Viewport } from "pixi-viewport";
 import { Loader } from "@pixi/loaders";
 import { Sprite } from "@pixi/sprite";
 import { GameScene } from "./GameScene";
-import { Keyboard } from "./Keyboard";
 
 Manager.initialize(0x55ff77);
 const loaderScene = new LoaderScene(start);

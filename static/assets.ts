@@ -5,6 +5,7 @@ export const assets = [
   { name: "bunnyBody", url: "bunnyBody.png" },
   { name: "bubble99", url: "Bubbles99px.png" },
   { name: "background", url: "background.png" },
+  { name: "tree1", url: "tree1.png" },
 ];
 
 // 소스코드에서 어셋 import해서 사용하는 방법

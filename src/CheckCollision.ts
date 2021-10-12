@@ -1,19 +1,24 @@
 import { DisplayObject } from "pixi.js";
+import { Stuff } from "./Stuff";
 // 훌륭
 
-function checkCollision(objA: DisplayObject, objB: DisplayObject): boolean {
-  const a = objA.getBounds();
-  const b = objB.getBounds();
+export function checkCollision(objA, objB): boolean {
+  objA.collisionBox.getBounds();
+  objB.collisionBox.getBounds();
 
-  const rightmostLeft = a.left < b.left ? b.left : a.left;
-  const leftmostRight = a.right > b.right ? b.right : a.right;
+  const a = objA.collisionBox._bounds;
+  const b = objB.collisionBox._bounds;
+
+  const rightmostLeft = a.minX < b.minX ? b.minX : a.minX;
+  const leftmostRight = a.maxX > b.maxX ? b.maxX : a.maxX;
 
   if (leftmostRight <= rightmostLeft) {
     return false;
   }
 
-  const bottommostTop = a.top < b.top ? b.top : a.top;
-  const topmostBottom = a.bottom > b.bottom ? b.bottom : a.bottom;
+  const bottommostTop = a.minY < b.minY ? b.minY : a.minY;
+  const topmostBottom = a.maxY > b.maxY ? b.maxY : a.maxY;
+  // console.log(Math.floor(bottommostTop), Math.floor(topmostBottom));
 
   return topmostBottom > bottommostTop;
 }

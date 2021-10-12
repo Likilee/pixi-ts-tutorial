@@ -1,4 +1,4 @@
-import { Container } from "@pixi/display";
+import { Bounds, Container } from "@pixi/display";
 import { Sprite } from "@pixi/sprite";
 import { Viewport } from "pixi-viewport";
 import { Scene } from "./Scene";
@@ -8,6 +8,9 @@ import { IWorld } from "./IWorld";
 import { Loader } from "@pixi/loaders";
 import { keyboard } from "./Keyboard";
 import { Ticker } from "@pixi/ticker";
+import { Stuff } from "./Stuff";
+import { checkCollision } from "./CheckCollision";
+import { Rectangle } from "@pixi/math";
 
 const resources = Loader.shared.resources;
 export class GameScene extends Container implements Scene {
@@ -18,6 +21,7 @@ export class GameScene extends Container implements Scene {
   constructor() {
     super();
     const world = new IWorld(resources["background"].texture);
+    world.sortableChildren = true;
     this.world = world;
 
     const viewport = new Viewport({
@@ -28,23 +32,8 @@ export class GameScene extends Container implements Scene {
       ticker: Ticker.shared,
       interaction: Manager.app.renderer.plugins.interaction, // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
     });
-
     this.viewport = viewport;
-    const player = new Player("bunny", viewport);
-    this.player = player;
     viewport.pinch().wheel().decelerate();
-
-    this.addChild(viewport);
-    viewport.addChild(world);
-    viewport.addChild(player);
-    // viewport.fit();
-    viewport.follow(player, {
-      speed: 0,
-      acceleration: null,
-      radius: null,
-    });
-
-    viewport.moveCenter(world.width / 2, world.height / 2);
     viewport.clamp({
       left: false, // whether to clamp to the left and at what value
       right: false, // whether to clamp to the right and at what value
@@ -55,23 +44,38 @@ export class GameScene extends Container implements Scene {
     });
     viewport.clampZoom({
       maxScale: 1.2,
-      minScale: 0.7,
+      minScale: 0.2,
       // maxWidth: viewport.worldWidth, // maxHeight: world.height,
       // minWidth: viewport.worldWidth,
     });
+    this.addChild(viewport);
+
+    const player = new Player("bunny", viewport);
+    this.player = player;
+
+    viewport.moveCenter(world.width / 2, world.height / 2);
+    viewport.addChild(world);
+    world.addChild(player);
+
+    viewport.follow(player, {
+      speed: 0,
+      acceleration: null,
+      radius: null,
+    });
+
+
+    const collideStuff = new Stuff("tree1", 500, 500);
+    collideStuff.addCollisionBox(-70, -50, 100, 50);
+    world.addChild(collideStuff);
   }
 
   public update(framesPassed: number) {
-    // console.log(this.viewport.worldWidth);
-    // console.log(window.devicePixelRatio);
-    // console.log(this.viewport.screenWidth);
-    // console.log(this.viewport.worldWidth);
-    // console.log(this.player.position);
-    // console.log(this.viewport.scale);
-    // console.log(this.viewport.center);
-    // console.log(framesPassed);
-    this.player.update(framesPassed);
+    this.player.update(framesPassed, this.world);
+    this.player.children[6].getBounds();
+    // console.log(this.player.children[6]._bounds);
+    // console.log(this.world.getChildAt(2));
   }
+
   public resize(screenWidth: number, screenHeight: number) {
     this.viewport.screenWidth = screenWidth;
     this.viewport.screenHeight = screenHeight;

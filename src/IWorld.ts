@@ -11,6 +11,7 @@ export class IWorld extends Container implements World {
     super();
 
     const backgroundSprite = Sprite.from(background);
+    backgroundSprite.zIndex = -500;
     this.addChild(backgroundSprite);
   }
 }
