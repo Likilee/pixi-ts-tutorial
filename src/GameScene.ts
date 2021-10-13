@@ -63,15 +63,14 @@ export class GameScene extends Container implements Scene {
       radius: null,
     });
 
-
     const collideStuff = new Stuff("tree1", 500, 500);
     collideStuff.addCollisionBox(-70, -50, 100, 50);
     world.addChild(collideStuff);
   }
 
   public update(framesPassed: number) {
-    this.player.update(framesPassed, this.world);
-    this.player.children[6].getBounds();
+    // this.player.update(framesPassed, this.world);
+    this.world.update(framesPassed);
     // console.log(this.player.children[6]._bounds);
     // console.log(this.world.getChildAt(2));
   }

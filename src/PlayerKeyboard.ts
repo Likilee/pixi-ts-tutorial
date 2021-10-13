@@ -2,6 +2,8 @@ import { Player } from "./Player";
 import { keyboard } from "./keyboard";
 import { Key } from "./Key";
 
+const SPEED = 5;
+
 export class PlayerKeyboard {
   public left: Key;
   public right: Key;
@@ -19,35 +21,34 @@ export class PlayerKeyboard {
 
   private initialize(player: Player) {
     this.left.press = () => {
-      player.vx -= 5;
+      player.vx -= SPEED;
       player.scale.x = -1;
-
     };
 
     this.left.release = () => {
-      player.vx += 5;
+      player.vx += SPEED;
     };
 
     this.up.press = () => {
-      player.vy -= 5;
+      player.vy -= SPEED;
     };
     this.up.release = () => {
-      player.vy += 5;
+      player.vy += SPEED;
     };
 
     this.right.press = () => {
-      player.vx += 5;
+      player.vx += SPEED;
       player.scale.x = 1;
     };
     this.right.release = () => {
-      player.vx -= 5;
+      player.vx -= SPEED;
     };
 
     this.down.press = () => {
-      player.vy += 5;
+      player.vy += SPEED;
     };
     this.down.release = () => {
-      player.vy -= 5;
+      player.vy -= SPEED;
     };
   }
 }

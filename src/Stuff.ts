@@ -20,11 +20,14 @@ export class Stuff extends Container {
     this.zIndex = this.y;
     this.addChild(sprite);
   }
-  d;
 
   addCollisionBox(x: number, y: number, width: number, height: number) {
     const collisionBox = new CollisionBox(x, y, width, height);
     this.addChild(collisionBox);
     this.collisionBox = collisionBox;
   }
+
+  // update(framesPassed:number,){
+
+  // }
 }
