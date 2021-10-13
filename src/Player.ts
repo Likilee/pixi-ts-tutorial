@@ -169,9 +169,25 @@ export class Player extends Container implements Avatar {
 
   private isCollided(world: IWorld): boolean {
     const stuffs: DisplayObject[] = world.children;
+    if (isOutOfWorld(this, this.viewport, 50)) return true;
     for (let i = 1; i < stuffs.length; ++i) {
       if (!(this === stuffs[i]) && checkCollision(this, stuffs[i])) return true;
     }
-    return false;
+    if (this.x > world.width) return false;
   }
+}
+
+function isOutOfWorld(
+  target: DisplayObject,
+  viewport: Viewport,
+  padding: number
+): boolean {
+  if (
+    target.x > viewport.worldWidth - padding ||
+    target.x < 0 + padding ||
+    target.y > viewport.worldHeight - padding ||
+    target.y < 0 + padding
+  )
+    return true;
+  return false;
 }
